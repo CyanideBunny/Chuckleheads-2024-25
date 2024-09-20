@@ -23,6 +23,7 @@ public class Teleop extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            // Initializes all of the components of the robot
             setIsGunnerActive();
             
             move();
@@ -50,9 +51,10 @@ public class Teleop extends LinearOpMode {
 
 
     private void move() {
+        // Does the math that calculates vectors for omni-directional movement
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
-
+        
         double rx = ((gamepad1.right_stick_y) * Math.sin(mc.currentAngle()) +
                 (gamepad1.right_stick_x) * Math.cos(mc.currentAngle()));
 
@@ -66,6 +68,7 @@ public class Teleop extends LinearOpMode {
 
 
     private void ImuReinit() {
+        // Initializes the IMU
         if (gamepad1.a) {
             mc.imuInit();
         }
@@ -73,6 +76,7 @@ public class Teleop extends LinearOpMode {
     
     
     private void launchDrone() {
+        // Launches the drone
         if (gamepad2.start) {
             rh.launchDrone();
         }
@@ -80,23 +84,27 @@ public class Teleop extends LinearOpMode {
     
     
     private void intake() {
+        // Controls the intake
         rh.intake(gamepad2.left_trigger - gamepad2.right_trigger);
     }
     
     
     private void hook() {
+        // Provides power to the hook 
         double power = (gamepad2.dpad_left ? 1 : 0) - (gamepad2.dpad_right ? 1 : 0);
         rh.hook(power);
     }
     
     
     private void slide() {
+        // Provides power to the slide that the intake is connected to
         double power = (gamepad2.left_bumper ? 1 : 0) - (gamepad2.right_bumper ? 1 : 0);
         rh.slide(power);
     }
     
     
     private void gripper() {
+        // Controls both the gripper and intake and allows them to work together
         if (gamepad2.dpad_down) {
             rh.lowerGripper();
             rh.raiseIntake();
